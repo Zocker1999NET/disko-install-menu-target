@@ -1,10 +1,10 @@
-# type: flake-parts module
 # defaults applicable to all nixosConfigurations used in nixosTests
 { inputs, lib, ... }@top:
 let
   inherit (lib.versions) majorMinor;
 in
 {
+  _class = "flake";
   flake.nixosModules.test-configDefaults =
     { config, ... }:
     {

@@ -1,10 +1,12 @@
 { ... }@top:
 {
+
   imports = [
     ./_configDefaults.nix
     ./_perSystemConfig.nix
-    ./descriptionFallback.nix
-    ./installDefault.nix
-    ./offlineBuilds.nix
+    ./testCases.nix
   ];
+
+  flake.modules.flake.perSystemConfig = ./_perSystemConfig.nix;
+
 }

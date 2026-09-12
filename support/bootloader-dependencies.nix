@@ -12,6 +12,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options.boot.loader.buildDependencies = mkOption {
     description = ''
       Derivations required for building a configuration

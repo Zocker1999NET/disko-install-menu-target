@@ -1,5 +1,5 @@
 {
-  description = "Interactive Installer Menu for Flake-based NixOS Disko Configurations";
+  description = "Test target flake for disko-install-menu";
 
   inputs = {
     # for flake structure
@@ -7,9 +7,8 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs"; # have full nixpkgs.lib
     };
-    # for package
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # for testing
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,13 +16,11 @@
   };
 
   outputs =
-    { nixpkgs, flake-parts, ... }@inputs:
+    { flake-parts, ... }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } (
-      { self, lib, ... }@top:
-      let
-        inherit (lib.lists) singleton;
-      in
+      { lib, ... }@top:
       {
+
         imports = [
           ./support/default.nix
           ./tests/default.nix
@@ -32,47 +29,6 @@
         systems = [
           "x86_64-linux"
         ];
-
-        flake = {
-          nixosModules = rec {
-            # with package already provided (allowing easier use)
-            default.imports = [
-              disko-install-menu
-              package
-            ];
-            # raw module exported (assuming package being available in system’s pkgs)
-            disko-install-menu = {
-              imports = [ ./module ];
-            };
-            # package as overlay & especially built for the given NixOS version
-            package.nixpkgs.overlays = singleton (
-              pkgs: _: {
-                inherit (inputs.disko.packages.${pkgs.system}) disko;
-                disko-install-menu = pkgs.callPackage ./package.nix { };
-              }
-            );
-          };
-        };
-
-        perSystem =
-          { pkgs, system, ... }:
-          {
-
-            devShells = rec {
-              default = test-config;
-              test-config = pkgs.mkShell {
-                shellHook = ''
-                  export CONFIG_PATH=./test_config
-                '';
-              };
-            };
-
-            packages = rec {
-              default = disko-install-menu;
-              disko-install-menu = pkgs.callPackage ./package.nix { };
-            };
-
-          };
 
       }
     );

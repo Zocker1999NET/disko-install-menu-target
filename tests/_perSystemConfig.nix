@@ -1,4 +1,3 @@
-# type: flake-parts module
 {
   flake-parts-lib,
   lib,
@@ -15,6 +14,8 @@ let
   inherit (flake-parts-lib) mkTransposedPerSystemModule;
 in
 {
+
+  _class = "flake";
 
   imports = singleton (mkTransposedPerSystemModule {
     file = ./_perSystemConfig.nix;
