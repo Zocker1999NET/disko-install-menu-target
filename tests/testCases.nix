@@ -8,6 +8,7 @@
 let
   inherit (lib) nixosSystem;
   inherit (lib.attrsets) mapAttrs' nameValuePair;
+  inherit (lib.modules) mkForce;
   inherit (lib.trivial) flip;
 
   # test configurations
@@ -45,6 +46,10 @@ in
           modules = [
             self.nixosModules.support
             self.nixosModules.test-configDefaults # minimal for successful build
+            {
+              # heavily speeds up rendering description of configuration in menu
+              system.description = mkForce "config intended to be only used by nixosTests testing disko-install-menu";
+            }
             module
           ];
           inherit system;
