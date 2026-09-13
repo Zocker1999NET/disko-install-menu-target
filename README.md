@@ -68,4 +68,4 @@ e.g. by making a PR into this repository.
 A copy of the MIT license is [attached](./LICENSE) to the repository.
 
 
-[1]: https://github.com/Zocker1999NET/disko-install-menu
+[1]: https://github.com/zocker-nix-projects/disko-install-menu
